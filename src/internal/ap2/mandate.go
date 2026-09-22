@@ -61,6 +61,14 @@ func (g *MandateGenerator) GenerateCartMandate(info ContractInfo, intent *Intent
 						"description": "Pay from AEX account balance",
 					},
 				},
+				{
+					SupportedMethods: "nano:mainnet",
+					Data: map[string]interface{}{
+						"network":     "nano:mainnet",
+						"asset":       "XNO",
+						"description": "Feeless Nano settlement for micro-bounties",
+					},
+				},
 			},
 			Details: PaymentDetailsInit{
 				ID: fmt.Sprintf("order_%s", info.ContractID),
@@ -221,6 +229,21 @@ func CreatePaymentResponseFromBalance(requestID string, tenantID string) Payment
 		Details: map[string]interface{}{
 			"tenant_id":   tenantID,
 			"method_type": "internal_balance",
+		},
+	}
+}
+
+// CreatePaymentResponseFromNano creates a PaymentResponse for feeless Nano (XNO)
+// settlement on nano:mainnet. Native peer-to-peer send: no issuer, no bridge,
+// no gas/miner fee. The address is the payee's Nano account.
+func CreatePaymentResponseFromNano(requestID string, address string) PaymentResponse {
+	return PaymentResponse{
+		RequestID:  requestID,
+		MethodName: "nano:mainnet",
+		Details: map[string]interface{}{
+			"network": "nano:mainnet",
+			"asset":   "XNO",
+			"address": address,
 		},
 	}
 }

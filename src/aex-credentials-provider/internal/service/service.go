@@ -64,6 +64,18 @@ func (s *Service) initDemoData() {
 			IsDefault:        false,
 			SupportedMethods: []string{"AEX_BALANCE"},
 		},
+		{
+			ID:               "pm_nano_xno",
+			Type:             "NANO_XNO",
+			DisplayName:      "Nano (XNO)",
+			IsDefault:        false,
+			SupportedMethods: []string{"nano:mainnet"},
+			Metadata: map[string]interface{}{
+				"network": "nano:mainnet",
+				"asset":   "XNO",
+				"fee":     "feeless",
+			},
+		},
 	}
 
 	// Demo users
@@ -96,6 +108,18 @@ func (s *Service) GetPaymentMethods(ctx context.Context, userID string) ([]ap2.P
 				DisplayName:      "AEX Account Balance",
 				IsDefault:        true,
 				SupportedMethods: []string{"AEX_BALANCE"},
+			},
+			{
+				ID:               "pm_nano_xno",
+				Type:             "NANO_XNO",
+				DisplayName:      "Nano (XNO)",
+				IsDefault:        false,
+				SupportedMethods: []string{"nano:mainnet"},
+				Metadata: map[string]interface{}{
+					"network": "nano:mainnet",
+					"asset":   "XNO",
+					"fee":     "feeless",
+				},
 			},
 		}, nil
 	}

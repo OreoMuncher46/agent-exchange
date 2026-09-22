@@ -22,6 +22,25 @@ const (
 	RolePaymentProcessor    = "payment-processor"
 )
 
+// AP2 Network & Issuer / payment method identifiers used in MethodData.
+// The mandate layer (intent/cart/payment) is rail-agnostic: it proves
+// authority and intent, not which network settles underneath.
+const (
+	SupportedMethodCard       = "CARD"
+	SupportedMethodAEXBalance = "AEX_BALANCE"
+	// SupportedMethodNano is the Nano (XNO) settlement network identifier
+	// for sub-fee-floor micro-bounties. Feeless, no issuer, no bridge.
+	SupportedMethodNano = "nano:mainnet"
+)
+
+// Payment method types for PaymentMethod.Type.
+const (
+	PaymentMethodTypeCard       = "CARD"
+	PaymentMethodTypeAEXBalance = "AEX_BALANCE"
+	// PaymentMethodTypeNano is a native peer-to-peer Nano (XNO) address.
+	PaymentMethodTypeNano = "NANO_XNO"
+)
+
 // PaymentCurrencyAmount represents a monetary amount with currency.
 // Based on W3C Payment Request API.
 type PaymentCurrencyAmount struct {

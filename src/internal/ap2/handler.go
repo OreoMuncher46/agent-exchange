@@ -144,6 +144,14 @@ func (h *PaymentHandler) ProcessPayment(ctx context.Context, req ProcessPaymentR
 			cartMandate.Contents.PaymentRequest.Details.ID,
 			req.ConsumerID,
 		)
+	} else if selectedMethod.Type == "NANO_XNO" {
+		// Feeless Nano (XNO) settlement on nano:mainnet: native
+		// peer-to-peer send, no token to mint, address identifies payee.
+		address := nanoAddressForMethod(selectedMethod, req.ConsumerID)
+		paymentResponse = CreatePaymentResponseFromNano(
+			cartMandate.Contents.PaymentRequest.Details.ID,
+			address,
+		)
 	} else {
 		// Get payment token
 		token, err := h.credentials.GetPaymentToken(ctx, req.ConsumerID, selectedMethod.ID)
@@ -198,6 +206,18 @@ func (h *PaymentHandler) ProcessPayment(ctx context.Context, req ProcessPaymentR
 // GetPaymentMethods returns available payment methods for a user.
 func (h *PaymentHandler) GetPaymentMethods(ctx context.Context, userID string) ([]PaymentMethod, error) {
 	return h.credentials.GetPaymentMethods(ctx, userID)
+}
+
+// nanoAddressForMethod resolves the Nano account for a payment method.
+// Prefers an explicit address in method metadata, falling back to the
+// consumer ID as the address placeholder.
+func nanoAddressForMethod(method *PaymentMethod, consumerID string) string {
+	if method != nil && method.Metadata != nil {
+		if addr, ok := method.Metadata["address"].(string); ok && addr != "" {
+			return addr
+		}
+	}
+	return consumerID
 }
 
 // ValidateMandates validates the mandate chain for a payment.

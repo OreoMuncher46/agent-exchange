@@ -80,6 +80,18 @@ func (cp *MockCredentialsProvider) initDemoData() {
 			IsDefault:        false,
 			SupportedMethods: []string{"AEX_BALANCE"},
 		},
+		{
+			ID:               "pm_nano_xno",
+			Type:             "NANO_XNO",
+			DisplayName:      "Nano (XNO)",
+			IsDefault:        false,
+			SupportedMethods: []string{"nano:mainnet"},
+			Metadata: map[string]interface{}{
+				"network": "nano:mainnet",
+				"asset":   "XNO",
+				"fee":     "feeless",
+			},
+		},
 	}
 
 	// Assign to common demo user IDs
@@ -110,6 +122,18 @@ func (cp *MockCredentialsProvider) GetPaymentMethods(ctx context.Context, userID
 				DisplayName:      "AEX Account Balance",
 				IsDefault:        true,
 				SupportedMethods: []string{"AEX_BALANCE"},
+			},
+			{
+				ID:               "pm_nano_xno",
+				Type:             "NANO_XNO",
+				DisplayName:      "Nano (XNO)",
+				IsDefault:        false,
+				SupportedMethods: []string{"nano:mainnet"},
+				Metadata: map[string]interface{}{
+					"network": "nano:mainnet",
+					"asset":   "XNO",
+					"fee":     "feeless",
+				},
 			},
 		}, nil
 	}
